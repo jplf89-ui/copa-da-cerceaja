@@ -412,7 +412,7 @@
 
     <div class="kit-preview-form" id="kit-preview-form"></div>
 
-    <div class="fg"><label class="fl">Nome completo</label><input type="text" class="fi" id="f-nome" placeholder="Seu nome"></div>
+    <div class="fg"><label class="fl">Nome completo</label><input type="text" class="fi" id="f-nome" placeholder="Seu nome" autocomplete="name"></div>
     <div class="frow">
       <div class="fg"><label class="fl">WhatsApp</label><input type="tel" class="fi" id="f-wpp" placeholder="(41) 99999-9999"></div>
       <div class="fg"><label class="fl">E-mail</label><input type="email" class="fi" id="f-email" placeholder="seu@email.com"></div>
@@ -429,20 +429,20 @@
     </div>
     <div class="fg">
       <label class="fl">Entrega</label>
-      <select class="fs">
+      <select class="fs" id="f-entrega">
         <option value="">Como prefere receber?</option>
-        <option>Retirar em Curitiba (combinar local)</option>
-        <option>Envio pelos Correios / Transportadora (+ frete)</option>
+        <option value="retirada">Retirar em Curitiba (combinar local)</option>
+        <option value="envio">Envio pelos Correios / Transportadora (+ frete)</option>
       </select>
     </div>
     <div class="fg">
       <label class="fl">CEP (se for envio)</label>
-      <input type="text" class="fi" placeholder="00000-000">
+      <input type="text" class="fi" id="f-cep" placeholder="00000-000">
       <p class="fn">Calcularemos o frete e incluiremos no link de pagamento.</p>
     </div>
     <div class="fg">
       <label class="fl">Observações</label>
-      <input type="text" class="fi" placeholder="Alguma restrição, substituição ou dúvida?">
+      <input type="text" class="fi" id="f-obs" placeholder="Alguma restrição, substituição ou dúvida?">
     </div>
 
     <button class="btn-sub" onclick="enviarPedido()">Enviar Pedido</button>
@@ -471,7 +471,7 @@
 <footer>
   <strong>Copa das Cervejas 2026</strong><br><br>
   Feito com 🍺 em Curitiba, PR · Pedidos pelo formulário ou WhatsApp<br>
-  <span style="font-size:10px;margin-top:6px;display:block;">Venda exclusiva para maiores de 18 anos · Beba com responsabilidade · ©2026</span>
+  <span style="font-size:10px;margin-top:6px;display:block;">Venda exclusiva para maiores de 18 anos · Beba com responsabilidade · ©2026<br><a href="/politica-de-privacidade.html" style="color:rgba(201,168,76,.4);text-decoration:underline;">Política de Privacidade</a></span>
 </footer>
 
 <script>
@@ -624,16 +624,52 @@ function levarParaPedido() {
 }
 
 // ── ENVIAR PEDIDO ──
-function enviarPedido() {
-  const nome = document.getElementById('f-nome').value.trim();
-  const wpp  = document.getElementById('f-wpp').value.trim();
-  const kit  = document.getElementById('f-kit').value;
+async function enviarPedido() {
+  const nome    = document.getElementById('f-nome').value.trim();
+  const wpp     = document.getElementById('f-wpp').value.trim();
+  const email   = document.getElementById('f-email').value.trim();
+  const kit     = document.getElementById('f-kit').value;
+  const entrega = document.getElementById('f-entrega').value;
+  const cep     = document.getElementById('f-cep').value.trim();
+  const obs     = document.getElementById('f-obs').value.trim();
+
   if (!nome || !wpp || !kit) {
     alert('Por favor, preencha nome, WhatsApp e o kit escolhido.');
     return;
   }
-  // Aqui entraria a integração com Mercado Pago ou envio para backend
-  alert(`Pedido recebido, ${nome}! 🍺⚽\n\nEm até 2 horas você receberá o link de pagamento no WhatsApp ${wpp}.`);
+
+  const btnSubmit = document.querySelector('.btn-sub');
+  btnSubmit.disabled = true;
+  btnSubmit.textContent = 'Processando...';
+
+  // Monta itens do kit personalizado
+  const itens = carrinho.map(i => ({
+    nome: `${i.pais} — ${i.nome} (${i.vol})`,
+    quantidade: 1,
+    preco: i.precoVenda,
+  }));
+
+  try {
+    const res = await fetch('/api/pedido', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ nome, whatsapp: wpp, email, kit, itens, entrega, cep, observacoes: obs }),
+    });
+
+    const data = await res.json();
+
+    if (data.checkout_url) {
+      window.location.href = data.checkout_url;
+    } else {
+      alert('Erro ao processar pedido. Entre em contato pelo WhatsApp.');
+      btnSubmit.disabled = false;
+      btnSubmit.textContent = 'Enviar Pedido';
+    }
+  } catch (e) {
+    alert('Erro de conexão. Tente novamente ou entre em contato pelo WhatsApp.');
+    btnSubmit.disabled = false;
+    btnSubmit.textContent = 'Enviar Pedido';
+  }
 }
 
 // ── INIT ──

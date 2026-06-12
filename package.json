@@ -1,0 +1,12 @@
+{
+  "name": "copa-das-cervejas",
+  "version": "1.0.0",
+  "description": "Landing page de kits de cervejas para a Copa do Mundo 2026",
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "mercadopago": "^2.0.15",
+    "resend": "^3.2.0"
+  }
+}
