@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Copa das Cervejas 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --verde:#1a6b3a; --verde-c:#22873f;
+    --ouro:#c9a84c;  --ouro-c:#e8c96e;
+    --creme:#fdf6e3; --escuro:#0f1a10;
+    --borda:rgba(201,168,76,.15);
+    --texto-muted:rgba(253,246,227,.5);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{font-family:'Inter',sans-serif;background:var(--escuro);color:var(--creme);overflow-x:hidden;}
+
+  /* ── HERO ── */
+  .hero{
+    min-height:100vh;
+    background:
+      radial-gradient(ellipse 80% 55% at 50% 0%,rgba(201,168,76,.16) 0%,transparent 65%),
+      radial-gradient(ellipse 50% 40% at 85% 100%,rgba(26,107,58,.22) 0%,transparent 60%),
+      var(--escuro);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;padding:80px 24px 60px;position:relative;overflow:hidden;
+  }
+  .hero::before{
+    content:'';position:absolute;inset:0;pointer-events:none;
+    background-image:
+      repeating-linear-gradient(0deg,transparent,transparent 59px,rgba(201,168,76,.03) 60px),
+      repeating-linear-gradient(90deg,transparent,transparent 59px,rgba(201,168,76,.03) 60px);
+  }
+  .badge{display:inline-flex;align-items:center;gap:8px;background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.3);color:var(--ouro-c);padding:6px 16px;border-radius:100px;font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;margin-bottom:32px;}
+  .badge-dot{width:6px;height:6px;background:var(--ouro);border-radius:50%;animation:pulse 2s ease-in-out infinite;}
+  @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.65)}}
+  .hero-eye{font-family:'Bebas Neue',sans-serif;font-size:clamp(13px,2vw,16px);letter-spacing:.3em;color:var(--ouro);margin-bottom:14px;}
+  .hero-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(68px,13vw,152px);line-height:.88;margin-bottom:6px;}
+  .hero-title .out{display:block;-webkit-text-stroke:2px var(--ouro);color:transparent;}
+  .hero-title .sol{display:block;color:var(--creme);}
+  .hero-sub{font-size:clamp(15px,2.2vw,19px);color:var(--texto-muted);margin-top:22px;max-width:520px;line-height:1.65;}
+  .hero-sub em{color:var(--ouro-c);font-style:italic;}
+  .hero-cta{margin-top:42px;display:flex;gap:14px;flex-wrap:wrap;justify-content:center;}
+  .btn-g{background:var(--ouro);color:var(--escuro);padding:15px 34px;border-radius:4px;font-weight:700;font-size:14px;text-decoration:none;letter-spacing:.04em;transition:background .2s,transform .15s;border:none;cursor:pointer;display:inline-block;}
+  .btn-g:hover{background:var(--ouro-c);transform:translateY(-2px);}
+  .btn-o{background:transparent;color:var(--creme);padding:15px 34px;border-radius:4px;font-weight:600;font-size:14px;text-decoration:none;letter-spacing:.04em;border:1px solid rgba(253,246,227,.22);transition:border-color .2s,color .2s,transform .15s;cursor:pointer;display:inline-block;}
+  .btn-o:hover{border-color:var(--ouro);color:var(--ouro-c);transform:translateY(-2px);}
+  .scroll-hint{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;color:rgba(253,246,227,.22);font-size:10px;letter-spacing:.18em;text-transform:uppercase;}
+  .scroll-line{width:1px;height:38px;background:linear-gradient(to bottom,rgba(201,168,76,.45),transparent);animation:sd 2s ease-in-out infinite;}
+  @keyframes sd{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform:scaleY(1);transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+
+  /* ── UTILS ── */
+  .wrap{max-width:1100px;margin:0 auto;}
+  .sec{padding:96px 24px;}
+  .sec-label{font-size:11px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--ouro);margin-bottom:14px;}
+  .sec-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(34px,5.5vw,60px);line-height:1;color:var(--creme);margin-bottom:56px;}
+  .divider{height:1px;background:linear-gradient(90deg,transparent,rgba(201,168,76,.25),transparent);margin:0 24px;}
+
+  /* ── HOW ── */
+  .how-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:2px;background:rgba(201,168,76,.08);border:1px solid var(--borda);border-radius:8px;overflow:hidden;}
+  .how-step{background:rgba(15,26,16,.97);padding:36px 28px;transition:background .2s;}
+  .how-step:hover{background:rgba(26,107,58,.13);}
+  .step-n{font-family:'Bebas Neue',sans-serif;font-size:44px;color:rgba(201,168,76,.18);line-height:1;margin-bottom:14px;}
+  .step-ico{font-size:26px;margin-bottom:14px;}
+  .step-t{font-weight:700;font-size:15px;color:var(--creme);margin-bottom:8px;}
+  .step-d{font-size:13px;color:var(--texto-muted);line-height:1.6;}
+
+  /* ── KITS FIXOS ── */
+  .kits-bg{background:rgba(201,168,76,.025);border-top:1px solid var(--borda);border-bottom:1px solid var(--borda);}
+  .kits-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:22px;}
+  .kit-card{background:var(--escuro);border:1px solid var(--borda);border-radius:8px;overflow:hidden;transition:transform .2s,border-color .2s,box-shadow .2s;position:relative;display:flex;flex-direction:column;}
+  .kit-card:hover{transform:translateY(-5px);border-color:rgba(201,168,76,.38);box-shadow:0 18px 44px rgba(0,0,0,.45);}
+  .kit-card.star{border-color:var(--ouro);}
+  .star-tag{position:absolute;top:14px;right:14px;background:var(--ouro);color:var(--escuro);font-size:10px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;padding:4px 10px;border-radius:2px;}
+  .kit-head{padding:32px 28px 22px;border-bottom:1px solid var(--borda);}
+  .kit-flag-big{font-size:34px;margin-bottom:14px;display:block;line-height:1;}
+  .kit-name{font-family:'Bebas Neue',sans-serif;font-size:26px;color:var(--creme);margin-bottom:4px;}
+  .kit-sub{font-size:12px;color:var(--texto-muted);}
+  .kit-body{padding:22px 28px;flex:1;display:flex;flex-direction:column;}
+  .kit-list{list-style:none;margin-bottom:22px;flex:1;}
+  .kit-list li{display:flex;align-items:flex-start;gap:10px;padding:7px 0;border-bottom:1px solid rgba(201,168,76,.06);font-size:13px;line-height:1.4;}
+  .kit-list li:last-child{border-bottom:none;}
+  .cl-flag{font-size:17px;flex-shrink:0;}
+  .cl-info{display:flex;flex-direction:column;gap:2px;}
+  .cl-pais{font-weight:600;color:var(--creme);font-size:12px;}
+  .cl-nome{color:rgba(253,246,227,.45);font-size:11px;}
+  .cl-vol{color:rgba(201,168,76,.6);font-size:10px;font-weight:600;}
+  .kit-foot{display:flex;align-items:center;justify-content:space-between;padding-top:18px;border-top:1px solid var(--borda);flex-wrap:wrap;gap:10px;}
+  .preco-wrap{display:flex;flex-direction:column;}
+  .preco-lbl{font-size:10px;color:rgba(253,246,227,.38);text-transform:uppercase;letter-spacing:.1em;}
+  .preco-val{font-family:'Bebas Neue',sans-serif;font-size:30px;color:var(--ouro-c);line-height:1;}
+  .preco-sub{font-size:10px;color:rgba(253,246,227,.3);}
+  .btn-kit{background:var(--verde);color:var(--creme);padding:11px 20px;border-radius:4px;font-weight:700;font-size:13px;text-decoration:none;letter-spacing:.04em;border:none;cursor:pointer;transition:background .2s,transform .15s;white-space:nowrap;}
+  .btn-kit:hover{background:var(--verde-c);transform:translateY(-1px);}
+  .kit-card.star .btn-kit{background:var(--ouro);color:var(--escuro);}
+  .kit-card.star .btn-kit:hover{background:var(--ouro-c);}
+
+  /* ── MONTADOR ── */
+  .montador-bg{background:rgba(26,107,58,.06);border-top:1px solid var(--borda);border-bottom:1px solid var(--borda);}
+  .montador-layout{display:grid;grid-template-columns:1fr 340px;gap:32px;align-items:start;}
+
+  /* cardápio */
+  .cardapio-title{font-size:13px;font-weight:700;color:var(--texto-muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:18px;}
+  .cardapio-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;}
+
+  .cerv-card{
+    border:1px solid var(--borda);
+    border-radius:6px;
+    padding:14px 16px;
+    cursor:pointer;
+    transition:border-color .18s,background .18s,transform .12s;
+    position:relative;
+    user-select:none;
+    background:rgba(255,255,255,.02);
+  }
+  .cerv-card:hover{border-color:rgba(201,168,76,.35);background:rgba(201,168,76,.04);transform:translateY(-1px);}
+  .cerv-card.selected{border-color:var(--ouro);background:rgba(201,168,76,.1);}
+  .cerv-card.selected::after{
+    content:'✓';
+    position:absolute;top:8px;right:10px;
+    font-size:11px;font-weight:800;
+    color:var(--ouro);
+  }
+  .cerv-top{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+  .cerv-flag{font-size:22px;line-height:1;}
+  .cerv-pais{font-weight:700;font-size:13px;color:var(--creme);}
+  .cerv-nome{font-size:12px;color:var(--texto-muted);margin-bottom:6px;line-height:1.4;}
+  .cerv-bottom{display:flex;align-items:center;justify-content:space-between;}
+  .cerv-vol{font-size:10px;color:rgba(201,168,76,.55);font-weight:600;text-transform:uppercase;}
+  .cerv-preco{font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--ouro-c);}
+
+  /* resumo sticky */
+  .resumo-box{
+    position:sticky;top:24px;
+    background:var(--escuro);
+    border:1px solid var(--borda);
+    border-radius:8px;
+    overflow:hidden;
+  }
+  .resumo-head{padding:22px 24px;border-bottom:1px solid var(--borda);background:rgba(201,168,76,.05);}
+  .resumo-head-t{font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--creme);}
+  .resumo-head-s{font-size:12px;color:var(--texto-muted);margin-top:2px;}
+  .resumo-body{padding:20px 24px;min-height:160px;}
+  .resumo-vazio{color:var(--texto-muted);font-size:13px;text-align:center;padding:32px 0;line-height:1.6;}
+  .resumo-list{list-style:none;}
+  .resumo-item{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(201,168,76,.06);font-size:13px;}
+  .resumo-item:last-child{border-bottom:none;}
+  .resumo-item-nome{display:flex;align-items:center;gap:8px;color:var(--creme);}
+  .resumo-item-preco{color:var(--ouro-c);font-weight:600;white-space:nowrap;}
+  .resumo-remove{background:none;border:none;cursor:pointer;color:rgba(253,246,227,.25);font-size:15px;padding:2px 4px;transition:color .15s;line-height:1;}
+  .resumo-remove:hover{color:rgba(220,80,80,.7);}
+  .resumo-foot{padding:20px 24px;border-top:1px solid var(--borda);background:rgba(201,168,76,.04);}
+  .resumo-linha{display:flex;justify-content:space-between;font-size:13px;color:var(--texto-muted);margin-bottom:6px;}
+  .resumo-linha.total{font-size:15px;font-weight:700;color:var(--creme);border-top:1px solid var(--borda);padding-top:12px;margin-top:8px;}
+  .resumo-linha.total .num{font-family:'Bebas Neue',sans-serif;font-size:26px;color:var(--ouro-c);}
+  .resumo-aviso{font-size:11px;color:rgba(253,246,227,.3);margin-top:10px;line-height:1.5;}
+  .btn-add-pedido{width:100%;margin-top:16px;background:var(--ouro);color:var(--escuro);padding:14px;border-radius:4px;font-weight:800;font-size:14px;letter-spacing:.06em;text-transform:uppercase;border:none;cursor:pointer;transition:background .2s,transform .15s;display:none;}
+  .btn-add-pedido:hover{background:var(--ouro-c);transform:translateY(-1px);}
+  .btn-add-pedido.visible{display:block;}
+
+  /* ALERTA MINIMO */
+  .min-aviso{
+    font-size:12px;color:rgba(201,168,76,.7);
+    background:rgba(201,168,76,.08);
+    border:1px solid rgba(201,168,76,.2);
+    border-radius:4px;padding:8px 12px;
+    margin-top:12px;text-align:center;
+    display:none;
+  }
+  .min-aviso.show{display:block;}
+
+  /* ── CHECKOUT ── */
+  .checkout-bg{background:rgba(26,107,58,.07);border-top:1px solid var(--borda);}
+  .checkout-inner{max-width:640px;margin:0 auto;}
+  .form-t{font-family:'Bebas Neue',sans-serif;font-size:clamp(30px,5vw,50px);color:var(--creme);margin-bottom:6px;}
+  .form-s{font-size:14px;color:var(--texto-muted);margin-bottom:44px;line-height:1.65;}
+  .fg{margin-bottom:18px;}
+  .fl{display:block;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:rgba(253,246,227,.55);margin-bottom:7px;}
+  .fi,.fs{width:100%;background:rgba(253,246,227,.04);border:1px solid rgba(201,168,76,.18);border-radius:4px;padding:13px 15px;color:var(--creme);font-size:14px;font-family:'Inter',sans-serif;transition:border-color .2s;appearance:none;}
+  .fi:focus,.fs:focus{outline:none;border-color:var(--ouro);background:rgba(201,168,76,.05);}
+  .fs option{background:#1a2a1e;color:var(--creme);}
+  .frow{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .fn{font-size:11px;color:rgba(253,246,227,.3);margin-top:6px;}
+  /* kit selecionado preview no form */
+  .kit-preview-form{
+    background:rgba(201,168,76,.07);
+    border:1px solid rgba(201,168,76,.2);
+    border-radius:4px;
+    padding:12px 16px;
+    font-size:13px;
+    color:var(--ouro-c);
+    margin-bottom:18px;
+    display:none;
+  }
+  .kit-preview-form.visible{display:block;}
+  .btn-sub{width:100%;background:var(--ouro);color:var(--escuro);padding:17px;border-radius:4px;font-weight:800;font-size:15px;letter-spacing:.06em;text-transform:uppercase;border:none;cursor:pointer;margin-top:10px;transition:background .2s,transform .15s;}
+  .btn-sub:hover{background:var(--ouro-c);transform:translateY(-1px);}
+  .segs{display:flex;align-items:center;justify-content:center;gap:18px;margin-top:20px;flex-wrap:wrap;}
+  .seg{display:flex;align-items:center;gap:5px;font-size:11px;color:rgba(253,246,227,.35);}
+
+  /* ── FAQ ── */
+  .faq-item{border-bottom:1px solid rgba(201,168,76,.1);padding:24px 0;}
+  .faq-q{font-weight:600;font-size:15px;color:var(--creme);margin-bottom:10px;display:flex;justify-content:space-between;align-items:flex-start;gap:14px;}
+  .faq-q span{color:var(--ouro);flex-shrink:0;}
+  .faq-a{font-size:13px;color:var(--texto-muted);line-height:1.7;}
+
+  /* ── FOOTER ── */
+  footer{border-top:1px solid var(--borda);padding:36px 24px;text-align:center;color:rgba(253,246,227,.22);font-size:12px;}
+  footer strong{color:var(--ouro);font-size:15px;font-family:'Bebas Neue',sans-serif;letter-spacing:.1em;}
+
+  /* ── RESPONSIVO ── */
+  @media(max-width:800px){
+    .montador-layout{grid-template-columns:1fr;}
+    .resumo-box{position:static;}
+  }
+  @media(max-width:600px){
+    .frow{grid-template-columns:1fr;}
+    .kit-head,.kit-body{padding-left:20px;padding-right:20px;}
+    .hero-cta{flex-direction:column;align-items:stretch;}
+    .btn-g,.btn-o{text-align:center;}
+    .cardapio-grid{grid-template-columns:1fr 1fr;}
+  }
+  @media(max-width:400px){
+    .cardapio-grid{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="badge"><span class="badge-dot"></span>Copa do Mundo 2026 · EUA · México · Canadá</div>
+  <p class="hero-eye">48 seleções · 104 jogos · 1 ideia</p>
+  <h1 class="hero-title">
+    <span class="out">Copa das</span>
+    <span class="sol">Cervejas</span>
+  </h1>
+  <p class="hero-sub">Cada país que entrou em campo tem uma cerveja representando.<br><em>Escolha seu kit, torça com sabor.</em></p>
+  <div class="hero-cta">
+    <a href="#kits" class="btn-g">Ver os Kits</a>
+    <a href="#montar" class="btn-o">Montar meu kit</a>
+  </div>
+  <div class="scroll-hint"><div class="scroll-line"></div>role abaixo</div>
+</section>
+
+<!-- HOW IT WORKS -->
+<div class="sec wrap">
+  <p class="sec-label">Como funciona</p>
+  <h2 class="sec-title">Simples assim</h2>
+  <div class="how-grid">
+    <div class="how-step"><div class="step-n">01</div><div class="step-ico">🍺</div><div class="step-t">Escolha seu kit</div><div class="step-d">Kit fixo temático ou monte o seu escolhendo as cervejas que quiser do cardápio.</div></div>
+    <div class="how-step"><div class="step-n">02</div><div class="step-ico">📋</div><div class="step-t">Faça o pedido</div><div class="step-d">Preencha nome e contato. Em até 2h você recebe o link de pagamento no WhatsApp.</div></div>
+    <div class="how-step"><div class="step-n">03</div><div class="step-ico">📦</div><div class="step-t">Receba embalado</div><div class="step-d">Retirada em Curitiba ou envio para todo o Brasil. Cada cerveja identificada por país.</div></div>
+    <div class="how-step"><div class="step-n">04</div><div class="step-ico">⚽</div><div class="step-t">Beba e torça</div><div class="step-d">Abra a cerveja do país em campo. Se avançar, você já sabe qual destampar no próximo jogo.</div></div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- KITS FIXOS -->
+<section class="kits-bg" id="kits">
+  <div class="sec wrap">
+    <p class="sec-label">Kits prontos</p>
+    <h2 class="sec-title">Escolha sua escalação</h2>
+    <div class="kits-grid">
+
+      <!-- AMÉRICAS -->
+      <div class="kit-card">
+        <div class="kit-head">
+          <span class="kit-flag-big">🌎</span>
+          <div class="kit-name">Kit Américas</div>
+          <div class="kit-sub">8 cervejas · Sul e Central-América</div>
+        </div>
+        <div class="kit-body">
+          <ul class="kit-list">
+            <li><span class="cl-flag">🇧🇷</span><div class="cl-info"><span class="cl-pais">Brasil</span><span class="cl-nome">Eisenbahn Weizen</span><span class="cl-vol">500ml</span></div></li>
+            <li><span class="cl-flag">🇦🇷</span><div class="cl-info"><span class="cl-pais">Argentina</span><span class="cl-nome">Patagonia Amber Lager</span><span class="cl-vol">730ml</span></div></li>
+            <li><span class="cl-flag">🇺🇾</span><div class="cl-info"><span class="cl-pais">Uruguai</span><span class="cl-nome">Patricia</span><span class="cl-vol">960ml</span></div></li>
+            <li><span class="cl-flag">🇵🇾</span><div class="cl-info"><span class="cl-pais">Paraguai</span><span class="cl-nome">Pilsen Paraguay</span><span class="cl-vol">946ml</span></div></li>
+            <li><span class="cl-flag">🇲🇽</span><div class="cl-info"><span class="cl-pais">México</span><span class="cl-nome">Modelo Especial</span><span class="cl-vol">355ml</span></div></li>
+            <li><span class="cl-flag">🇺🇸</span><div class="cl-info"><span class="cl-pais">Estados Unidos</span><span class="cl-nome">Brooklyn Lager</span><span class="cl-vol">355ml</span></div></li>
+            <li><span class="cl-flag">🇨🇴</span><div class="cl-info"><span class="cl-pais">Colômbia</span><span class="cl-nome">Club Colombia</span><span class="cl-vol">330ml</span></div></li>
+            <li><span class="cl-flag">🇨🇦</span><div class="cl-info"><span class="cl-pais">Canadá</span><span class="cl-nome">Moosehead Lager</span><span class="cl-vol">355ml</span></div></li>
+          </ul>
+          <div class="kit-foot">
+            <div class="preco-wrap">
+              <span class="preco-lbl">kit completo</span>
+              <span class="preco-val">R$ 180</span>
+              <span class="preco-sub">8 cervejas + embalagem</span>
+            </div>
+            <button class="btn-kit" onclick="selecionarKitFixo('Kit Américas','R$ 180')">Quero esse kit</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- EUROPA -->
+      <div class="kit-card star">
+        <div class="star-tag">⭐ Mais especial</div>
+        <div class="kit-head">
+          <span class="kit-flag-big">🌍</span>
+          <div class="kit-name">Kit Europa</div>
+          <div class="kit-sub">8 cervejas · As maiores cervejarias do mundo</div>
+        </div>
+        <div class="kit-body">
+          <ul class="kit-list">
+            <li><span class="cl-flag">🇩🇪</span><div class="cl-info"><span class="cl-pais">Alemanha</span><span class="cl-nome">Weihenstephaner Hefe Weissbier</span><span class="cl-vol">500ml</span></div></li>
+            <li><span class="cl-flag">🇧🇪</span><div class="cl-info"><span class="cl-pais">Bélgica</span><span class="cl-nome">Delirium Tremens</span><span class="cl-vol">330ml</span></div></li>
+            <li><span class="cl-flag">🏴󠁧󠁢󠁥󠁮󠁧󠁿</span><div class="cl-info"><span class="cl-pais">Inglaterra</span><span class="cl-nome">Fuller's London Pride</span><span class="cl-vol">500ml</span></div></li>
+            <li><span class="cl-flag">🇮🇪</span><div class="cl-info"><span class="cl-pais">Irlanda</span><span class="cl-nome">Guinness Draught</span><span class="cl-vol">440ml</span></div></li>
+            <li><span class="cl-flag">🇳🇱</span><div class="cl-info"><span class="cl-pais">Holanda</span><span class="cl-nome">La Trappe Blond</span><span class="cl-vol">330ml</span></div></li>
+            <li><span class="cl-flag">🇫🇷</span><div class="cl-info"><span class="cl-pais">França</span><span class="cl-nome">Kronenbourg 1664 Blanc</span><span class="cl-vol">330ml</span></div></li>
+            <li><span class="cl-flag">🇪🇸</span><div class="cl-info"><span class="cl-pais">Espanha</span><span class="cl-nome">Estrella Galicia</span><span class="cl-vol">330ml</span></div></li>
+            <li><span class="cl-flag">🇵🇹</span><div class="cl-info"><span class="cl-pais">Portugal</span><span class="cl-nome">Super Bock</span><span class="cl-vol">330ml</span></div></li>
+          </ul>
+          <div class="kit-foot">
+            <div class="preco-wrap">
+              <span class="preco-lbl">kit completo</span>
+              <span class="preco-val">R$ 245</span>
+              <span class="preco-sub">8 importadas + embalagem</span>
+            </div>
+            <button class="btn-kit" onclick="selecionarKitFixo('Kit Europa','R$ 245')">Quero esse kit</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ÁSIA -->
+      <div class="kit-card">
+        <div class="kit-head">
+          <span class="kit-flag-big">🌏</span>
+          <div class="kit-name">Kit Ásia & Mundo</div>
+          <div class="kit-sub">8 cervejas · Oriente e surpresas da Copa</div>
+        </div>
+        <div class="kit-body">
+          <ul class="kit-list">
+            <li><span class="cl-flag">🇯🇵</span><div class="cl-info"><span class="cl-pais">Japão</span><span class="cl-nome">Asahi Super Dry</span><span class="cl-vol">350ml</span></div></li>
+            <li><span class="cl-flag">🇰🇷</span><div class="cl-info"><span class="cl-pais">Coreia do Sul</span><span class="cl-nome">Cass Fresh</span><span class="cl-vol">355ml</span></div></li>
+            <li><span class="cl-flag">🇨🇳</span><div class="cl-info"><span class="cl-pais">China</span><span class="cl-nome">Tsingtao</span><span class="cl-vol">330ml</span></div></li>
+            <li><span class="cl-flag">🇹🇭</span><div class="cl-info"><span class="cl-pais">Tailândia</span><span class="cl-nome">Singha</span><span class="cl-vol">330ml</span></div></li>
+            <li><span class="cl-flag">🇸🇬</span><div class="cl-info"><span class="cl-pais">Singapura</span><span class="cl-nome">Tiger Beer</span><span class="cl-vol">330ml</span></div></li>
+            <li><span class="cl-flag">🇮🇹</span><div class="cl-info"><span class="cl-pais">Itália</span><span class="cl-nome">Peroni Nastro Azzurro</span><span class="cl-vol">330ml</span></div></li>
+            <li><span class="cl-flag">🇨🇿</span><div class="cl-info"><span class="cl-pais">Rep. Tcheca</span><span class="cl-nome">Pilsner Urquell</span><span class="cl-vol">500ml</span></div></li>
+            <li><span class="cl-flag">🇲🇽</span><div class="cl-info"><span class="cl-pais">México</span><span class="cl-nome">Corona Extra</span><span class="cl-vol">330ml</span></div></li>
+          </ul>
+          <div class="kit-foot">
+            <div class="preco-wrap">
+              <span class="preco-lbl">kit completo</span>
+              <span class="preco-val">R$ 165</span>
+              <span class="preco-sub">8 cervejas + embalagem</span>
+            </div>
+            <button class="btn-kit" onclick="selecionarKitFixo('Kit Ásia & Mundo','R$ 165')">Quero esse kit</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- MONTADOR PERSONALIZADO -->
+<section class="montador-bg" id="montar">
+  <div class="sec wrap">
+    <p class="sec-label">Kit personalizado</p>
+    <h2 class="sec-title">Monte o seu</h2>
+
+    <div class="montador-layout">
+
+      <!-- CARDÁPIO -->
+      <div>
+        <p class="cardapio-title">Cardápio · clique para adicionar ao kit</p>
+        <div class="cardapio-grid" id="cardapio"></div>
+      </div>
+
+      <!-- RESUMO -->
+      <div class="resumo-box">
+        <div class="resumo-head">
+          <div class="resumo-head-t">Seu Kit</div>
+          <div class="resumo-head-s" id="resumo-count">Nenhuma cerveja selecionada</div>
+        </div>
+        <div class="resumo-body">
+          <div class="resumo-vazio" id="resumo-vazio">
+            👆 Clique nas cervejas<br>do cardápio para montar seu kit
+          </div>
+          <ul class="resumo-list" id="resumo-list"></ul>
+        </div>
+        <div class="resumo-foot">
+          <div class="resumo-linha"><span>Cervejas</span><span id="sub-cervejas">R$ 0,00</span></div>
+          <div class="resumo-linha"><span>Embalagem</span><span>R$ 12,00</span></div>
+          <div class="resumo-linha total"><span>Total</span><span class="num" id="sub-total">R$ 0,00</span></div>
+          <div class="resumo-aviso">Preços com margem já incluída · Frete calculado no pedido</div>
+          <div class="min-aviso" id="min-aviso">Mínimo de 2 cervejas para fazer um pedido</div>
+          <button class="btn-add-pedido" id="btn-add-pedido" onclick="levarParaPedido()">Ir para o pedido →</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CHECKOUT -->
+<section class="checkout-bg" id="pedido">
+  <div class="sec checkout-inner">
+    <p class="sec-label">Fazer pedido</p>
+    <h2 class="form-t">Quero meu kit</h2>
+    <p class="form-s">Preencha abaixo. Você receberá confirmação e link de pagamento no WhatsApp em até 2 horas.</p>
+
+    <div class="kit-preview-form" id="kit-preview-form"></div>
+
+    <div class="fg"><label class="fl">Nome completo</label><input type="text" class="fi" id="f-nome" placeholder="Seu nome"></div>
+    <div class="frow">
+      <div class="fg"><label class="fl">WhatsApp</label><input type="tel" class="fi" id="f-wpp" placeholder="(41) 99999-9999"></div>
+      <div class="fg"><label class="fl">E-mail</label><input type="email" class="fi" id="f-email" placeholder="seu@email.com"></div>
+    </div>
+    <div class="fg">
+      <label class="fl">Kit escolhido</label>
+      <select class="fs" id="f-kit">
+        <option value="">Selecione...</option>
+        <option>Kit Américas — R$ 180</option>
+        <option>Kit Europa — R$ 245</option>
+        <option>Kit Ásia & Mundo — R$ 165</option>
+        <option>Kit Personalizado (montado acima)</option>
+      </select>
+    </div>
+    <div class="fg">
+      <label class="fl">Entrega</label>
+      <select class="fs">
+        <option value="">Como prefere receber?</option>
+        <option>Retirar em Curitiba (combinar local)</option>
+        <option>Envio pelos Correios / Transportadora (+ frete)</option>
+      </select>
+    </div>
+    <div class="fg">
+      <label class="fl">CEP (se for envio)</label>
+      <input type="text" class="fi" placeholder="00000-000">
+      <p class="fn">Calcularemos o frete e incluiremos no link de pagamento.</p>
+    </div>
+    <div class="fg">
+      <label class="fl">Observações</label>
+      <input type="text" class="fi" placeholder="Alguma restrição, substituição ou dúvida?">
+    </div>
+
+    <button class="btn-sub" onclick="enviarPedido()">Enviar Pedido</button>
+
+    <div class="segs">
+      <span class="seg">🔒 Pix ou cartão via Mercado Pago</span>
+      <span class="seg">📦 Embalagem reforçada</span>
+      <span class="seg">⚽ Entrega antes do jogo</span>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- FAQ -->
+<div class="sec" style="max-width:740px;margin:0 auto;">
+  <p class="sec-label">Dúvidas</p>
+  <h2 class="sec-title" style="margin-bottom:32px">FAQ</h2>
+  <div class="faq-item"><div class="faq-q">As cervejas são realmente dos países da Copa? <span>↓</span></div><div class="faq-a">Sempre que possível uso a cerveja original do país. Para países sem importação disponível em Curitiba, substituo por uma cerveja do mesmo estilo e aviso antes de confirmar o pedido.</div></div>
+  <div class="faq-item"><div class="faq-q">Qual o prazo de entrega? <span>↓</span></div><div class="faq-a">Curitiba e Região Metropolitana: 1 a 2 dias úteis após pagamento confirmado. Para outras cidades: informo o prazo exato com base no CEP antes de você pagar.</div></div>
+  <div class="faq-item"><div class="faq-q">Como funciona o pagamento? <span>↓</span></div><div class="faq-a">Após receber o pedido, envio um link via Mercado Pago (Pix ou cartão) no WhatsApp. O kit é separado após a confirmação do pagamento.</div></div>
+  <div class="faq-item"><div class="faq-q">Posso pedir mais de um kit? <span>↓</span></div><div class="faq-a">Sim! Para 3 ou mais kits, entre em contato pelo WhatsApp para condições especiais de preço e frete.</div></div>
+  <div class="faq-item"><div class="faq-q">Posso repetir a mesma cerveja no kit personalizado? <span>↓</span></div><div class="faq-a">Pode sim. Selecione normalmente no montador — cada clique adiciona uma unidade. Me avise na observação do pedido se quiser mais de uma unidade da mesma cerveja.</div></div>
+</div>
+
+<footer>
+  <strong>Copa das Cervejas 2026</strong><br><br>
+  Feito com 🍺 em Curitiba, PR · Pedidos pelo formulário ou WhatsApp<br>
+  <span style="font-size:10px;margin-top:6px;display:block;">Venda exclusiva para maiores de 18 anos · Beba com responsabilidade · ©2026</span>
+</footer>
+
+<script>
+// ── DADOS ──
+const MARGEM = 1.30;
+const EMBALAGEM = 12;
+
+const cervejas = [
+  { id:1,  flag:'🇩🇪', pais:'Alemanha',       nome:'Weihenstephaner Hefe Weissbier', vol:'500ml', custo:28.5 },
+  { id:2,  flag:'🇩🇪', pais:'Alemanha',       nome:'Paulaner Weissbier',             vol:'500ml', custo:24   },
+  { id:3,  flag:'🇧🇪', pais:'Bélgica',        nome:'Duvel',                          vol:'330ml', custo:25   },
+  { id:4,  flag:'🇧🇪', pais:'Bélgica',        nome:'Delirium Tremens',               vol:'330ml', custo:32.5 },
+  { id:5,  flag:'🏴󠁧󠁢󠁥󠁮󠁧󠁿', pais:'Inglaterra',     nome:"Fuller's London Pride",          vol:'500ml', custo:24   },
+  { id:6,  flag:'🇮🇪', pais:'Irlanda',        nome:'Guinness Draught',               vol:'440ml', custo:23   },
+  { id:7,  flag:'🇳🇱', pais:'Holanda',        nome:'La Trappe Blond',                vol:'330ml', custo:23   },
+  { id:8,  flag:'🇫🇷', pais:'França',         nome:'Kronenbourg 1664 Blanc',         vol:'330ml', custo:16   },
+  { id:9,  flag:'🇮🇹', pais:'Itália',         nome:'Peroni Nastro Azzurro',          vol:'330ml', custo:11.5 },
+  { id:10, flag:'🇪🇸', pais:'Espanha',        nome:'Estrella Galicia',               vol:'330ml', custo:14   },
+  { id:11, flag:'🇵🇹', pais:'Portugal',       nome:'Super Bock',                     vol:'330ml', custo:14   },
+  { id:12, flag:'🇨🇿', pais:'Rep. Tcheca',    nome:'Pilsner Urquell',                vol:'500ml', custo:20   },
+  { id:13, flag:'🇺🇸', pais:'EUA',            nome:'Brooklyn Lager',                 vol:'355ml', custo:16   },
+  { id:14, flag:'🇲🇽', pais:'México',         nome:'Modelo Especial',                vol:'355ml', custo:16   },
+  { id:15, flag:'🇲🇽', pais:'México',         nome:'Corona Extra',                   vol:'330ml', custo:11   },
+  { id:16, flag:'🇦🇷', pais:'Argentina',      nome:'Patagonia Amber Lager',          vol:'730ml', custo:24   },
+  { id:17, flag:'🇺🇾', pais:'Uruguai',        nome:'Patricia',                       vol:'960ml', custo:16   },
+  { id:18, flag:'🇵🇾', pais:'Paraguai',       nome:'Pilsen Paraguay',                vol:'946ml', custo:14   },
+  { id:19, flag:'🇯🇵', pais:'Japão',          nome:'Asahi Super Dry',                vol:'350ml', custo:14   },
+  { id:20, flag:'🇯🇵', pais:'Japão',          nome:'Sapporo',                        vol:'355ml', custo:17   },
+  { id:21, flag:'🇰🇷', pais:'Coreia do Sul',  nome:'Cass Fresh',                     vol:'355ml', custo:16   },
+  { id:22, flag:'🇨🇳', pais:'China',          nome:'Tsingtao',                       vol:'330ml', custo:14   },
+  { id:23, flag:'🇹🇭', pais:'Tailândia',      nome:'Singha',                         vol:'330ml', custo:16   },
+  { id:24, flag:'🇸🇬', pais:'Singapura',      nome:'Tiger Beer',                     vol:'330ml', custo:14   },
+];
+
+// ── STATE ──
+let carrinho = []; // array de { ...cerveja, uid }
+let uidCounter = 0;
+let kitFixoSelecionado = null;
+
+// ── RENDER CARDÁPIO ──
+function renderCardapio() {
+  const grid = document.getElementById('cardapio');
+  grid.innerHTML = '';
+  cervejas.forEach(c => {
+    const precoVenda = +(c.custo * MARGEM).toFixed(2);
+    const card = document.createElement('div');
+    card.className = 'cerv-card';
+    card.id = `cerv-${c.id}`;
+    card.innerHTML = `
+      <div class="cerv-top">
+        <span class="cerv-flag">${c.flag}</span>
+        <span class="cerv-pais">${c.pais}</span>
+      </div>
+      <div class="cerv-nome">${c.nome}</div>
+      <div class="cerv-bottom">
+        <span class="cerv-vol">${c.vol}</span>
+        <span class="cerv-preco">R$ ${precoVenda.toFixed(2).replace('.',',')}</span>
+      </div>`;
+    card.addEventListener('click', () => toggleCerveja(c, card));
+    grid.appendChild(card);
+  });
+}
+
+// ── TOGGLE ──
+function toggleCerveja(c, card) {
+  kitFixoSelecionado = null; // limpa kit fixo se montar manual
+  const precoVenda = +(c.custo * MARGEM).toFixed(2);
+  const uid = ++uidCounter;
+  carrinho.push({ ...c, uid, precoVenda });
+  card.classList.add('selected');
+  // Se já tem uma selecionada, permite mais (não remove) — só visual de "pelo menos 1"
+  renderResumo();
+}
+
+// ── REMOVER DO CARRINHO ──
+function removerItem(uid) {
+  const idx = carrinho.findIndex(i => i.uid === uid);
+  if (idx === -1) return;
+  const id = carrinho[idx].id;
+  carrinho.splice(idx, 1);
+  // Atualiza visual do card só se não tiver mais nenhum desse id
+  if (!carrinho.find(i => i.id === id)) {
+    const card = document.getElementById(`cerv-${id}`);
+    if (card) card.classList.remove('selected');
+  }
+  renderResumo();
+}
+
+// ── RENDER RESUMO ──
+function renderResumo() {
+  const list = document.getElementById('resumo-list');
+  const vazio = document.getElementById('resumo-vazio');
+  const count = document.getElementById('resumo-count');
+  const subC = document.getElementById('sub-cervejas');
+  const subT = document.getElementById('sub-total');
+  const btnPedido = document.getElementById('btn-add-pedido');
+  const minAviso = document.getElementById('min-aviso');
+
+  const n = carrinho.length;
+
+  count.textContent = n === 0 ? 'Nenhuma cerveja selecionada'
+    : n === 1 ? '1 cerveja selecionada'
+    : `${n} cervejas selecionadas`;
+
+  vazio.style.display = n === 0 ? 'block' : 'none';
+  list.innerHTML = '';
+
+  let totalCervejas = 0;
+  carrinho.forEach(item => {
+    totalCervejas += item.precoVenda;
+    const li = document.createElement('li');
+    li.className = 'resumo-item';
+    li.innerHTML = `
+      <span class="resumo-item-nome">
+        <button class="resumo-remove" onclick="removerItem(${item.uid})" title="Remover">×</button>
+        ${item.flag} ${item.pais}
+      </span>
+      <span class="resumo-item-preco">R$ ${item.precoVenda.toFixed(2).replace('.',',')}</span>`;
+    list.appendChild(li);
+  });
+
+  const total = n > 0 ? totalCervejas + EMBALAGEM : 0;
+  subC.textContent = `R$ ${totalCervejas.toFixed(2).replace('.',',')}`;
+  subT.textContent = `R$ ${total.toFixed(2).replace('.',',')}`;
+
+  minAviso.classList.toggle('show', n === 1);
+  btnPedido.classList.toggle('visible', n >= 2);
+}
+
+// ── KIT FIXO ──
+function selecionarKitFixo(nome, preco) {
+  kitFixoSelecionado = { nome, preco };
+  document.getElementById('f-kit').value = `${nome} — ${preco}`;
+  const preview = document.getElementById('kit-preview-form');
+  preview.textContent = `✓ Kit selecionado: ${nome} · ${preco}`;
+  preview.classList.add('visible');
+  document.getElementById('pedido').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// ── IR PARA PEDIDO COM KIT PERSONALIZADO ──
+function levarParaPedido() {
+  if (carrinho.length < 2) return;
+  const total = carrinho.reduce((s, i) => s + i.precoVenda, 0) + EMBALAGEM;
+  const lista = carrinho.map(i => `${i.flag} ${i.pais} (${i.nome})`).join(', ');
+  document.getElementById('f-kit').value = 'Kit Personalizado (montado acima)';
+  const preview = document.getElementById('kit-preview-form');
+  preview.innerHTML = `✓ Kit Personalizado · ${carrinho.length} cervejas · Total: <strong>R$ ${total.toFixed(2).replace('.',',')}</strong><br><span style="font-size:11px;opacity:.7">${lista}</span>`;
+  preview.classList.add('visible');
+  document.getElementById('pedido').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// ── ENVIAR PEDIDO ──
+function enviarPedido() {
+  const nome = document.getElementById('f-nome').value.trim();
+  const wpp  = document.getElementById('f-wpp').value.trim();
+  const kit  = document.getElementById('f-kit').value;
+  if (!nome || !wpp || !kit) {
+    alert('Por favor, preencha nome, WhatsApp e o kit escolhido.');
+    return;
+  }
+  // Aqui entraria a integração com Mercado Pago ou envio para backend
+  alert(`Pedido recebido, ${nome}! 🍺⚽\n\nEm até 2 horas você receberá o link de pagamento no WhatsApp ${wpp}.`);
+}
+
+// ── INIT ──
+renderCardapio();
+renderResumo();
+</script>
+</body>
+</html>
